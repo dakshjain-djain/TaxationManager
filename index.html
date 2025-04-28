@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaxationManager - Seamless Business Compliance Solutions</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6.26.0/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #0a0f2b;
+            color: #e5e7eb;
+        }
+        .section-heading {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        .card {
+            background-color: #1e1e3f;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #2b3a7a;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+        .btn-primary {
+            background-color: #1e40af;
+            color: #ffffff;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
+        }
+        .btn-primary:hover {
+            background-color: #2b6cb0;
+            transform: scale(1.05);
+        }
+        .luxury-text {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .canvas-container {
+            background-color: #1e1e3f;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #2b3a7a;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #2b3a7a;
+            padding: 1rem;
+            text-align: left;
+        }
+        th {
+            background-color: #1e40af;
+            color: #ffffff;
+        }
+        tr:nth-child(even) {
+            background-color: #1e1e3f;
+        }
+        .faq-question {
+            cursor: pointer;
+            background-color: #1e1e3f;
+            padding: 1.5rem;
+            border: 1px solid #2b3a7a;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        .faq-question:hover {
+            background-color: #2b3a7a;
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .faq-answer.open {
+            max-height: 500px;
+            padding: 1.5rem;
+        }
+        .testimonial-card {
+            background-color: #1e1e3f;
+            border: 1px solid #2b3a7a;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+        }
+        .dropdown-menu {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const Navbar = () => {
+            const [isOpen, setIsOpen] = React.useState(false);
+
+            const toggleMenu = () => {
+                setIsOpen(!isOpen);
+            };
+
+            return (
+                <nav className="bg-[#0a0f2b] text-white py-6 px-4 sticky top-0 z-20 shadow-md">
+                    <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+                        <h1 className="text-5xl sm:text-4xl font-extrabold luxury-text tracking-tight whitespace-nowrap">TaxationManager</h1>
+                        <button 
+                            className="md:hidden text-2xl text-white focus:outline-none" 
+                            onClick={toggleMenu}
+                        >
+                            {isOpen ? '✕' : '☰'}
+                        </button>
+                        <div className={`md:flex md:items-center md:space-x-6 ${isOpen ? 'block' : 'hidden'} w-full md:w-auto mt-4 md:mt-0`}>
+                            <a href="#home" className="block md:inline-block text-lg sm:text-base font-semibold hover:text-blue-300 transition-colors py-2">Home</a>
+                            <a href="#services" className="block md:inline-block text-lg sm:text-base font-semibold hover:text-blue-300 transition-colors py-2">Services</a>
+                            <a href="#pricing" className="block md:inline-block text-lg sm:text-base font-semibold hover:text-blue-300 transition-colors py-2">Pricing</a>
+                            <a href="#about" className="block md:inline-block text-lg sm:text-base font-semibold hover:text-blue-300 transition-colors py-2">About</a>
+                            <a href="#differences" className="block md:inline-block text-lg sm:text-base font-semibold hover:text-blue-300 transition-colors py-2">Entity Comparison</a>
+                            <a href="#benefits" className="block md:inline-block text-lg sm:text-base font-semibold hover:text-blue-300 transition-colors py-2">Benefits</a>
+                            <div className="relative group">
+                                <button className="block md:inline-block text-lg sm:text-base font-semibold hover:text-blue-300 transition-colors py-2">
+                                    More
+                                </button>
+                                <div className="absolute left-0 mt-2 w-48 bg-[#1e1e3f] border border-[#2b3a7a] rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 dropdown-menu md:hidden group-hover:block">
+                                    <a href="#myths" className="block px-4 py-2 text-lg sm:text-base text-gray-300 hover:bg-[#2b3a7a] hover:text-white">Myths</a>
+                                    <a href="#data" className="block px-4 py-2 text-lg sm:text-base text-gray-300 hover:bg-[#2b3a7a] hover:text-white">Insights</a>
+                                    <a href="#did-you-know" className="block px-4 py-2 text-lg sm:text-base text-gray-300 hover:bg-[#2b3a7a] hover:text-white">Did You Know</a>
+                                </div>
+                            </div>
+                            <a href="#testimonials" className="block md:inline-block text-lg sm:text-base font-semibold hover:text-blue-300 transition-colors py-2">Testimonials</a>
+                            <a href="#faq" className="block md:inline-block text-lg sm:text-base font-semibold hover:text-blue-300 transition-colors py-2">FAQ</a>
+                            <a href="#contact" className="block md:inline-block text-lg sm:text-base font-semibold hover:text-blue-300 transition-colors py-2">Contact</a>
+                        </div>
+                    </div>
+                </nav>
+            );
+        };
+
+        const Hero = () => (
+            <section id="home" className="bg-gradient-to-b from-[#0a0f2b] to-[#1e1e3f] text-white py-24 text-center">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-6xl font-bold luxury-text mb-10">TaxationManager</h2>
+                    <p className="text-3xl mb-10">Your Trusted Partner for Seamless Business Compliance</p>
+                    <p className="text-xl mb-12 leading-loose">Affordable. Efficient. Empowering Entrepreneurs Since 2024.</p>
+                    <a href="#services" className="btn-primary text-xl">Discover Our Solutions</a>
+                </div>
+            </section>
+        );
+
+        const Services = () => (
+            <section id="services" className="py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="section-heading text-center mb-16 luxury-text">Our Comprehensive Services</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        {[
+                            { title: "Private Limited Company", desc: "Form a secure, scalable entity with limited liability for shareholders." },
+                            { title: "Public Limited Company", desc: "Access public funding with a structure designed for large-scale operations." },
+                            { title: "LLP Registration", desc: "Combine partnership flexibility with limited liability protections." },
+                            { title: "Section-8 Company", desc: "Establish a non-profit for charitable or social causes." },
+                            { title: "One Person Company (OPC)", desc: "Ideal for solo entrepreneurs seeking a single-owner corporate entity." },
+                            { title: "Partnership Firm", desc: "Collaborate with partners under a simple, cost-effective structure." },
+                            { title: "Sole Proprietorship", desc: "Start quickly with minimal compliance for individual ownership." },
+                            { title: "GST Registration", desc: "Comply with tax regulations and unlock input tax credits." },
+                            { title: "MSME Registration", desc: "Gain access to government subsidies and enhanced credibility." },
+                            { title: "DPIIT Registration", desc: "Secure startup recognition for tax benefits and funding." },
+                            { title: "Shop & Establishment License", desc: "Formalize retail and service businesses with local compliance." },
+                            { title: "Import Export Code (IEC)", desc: "Enable international trade with a globally recognized code." },
+                            { title: "Trademark Registration", desc: "Protect your brand identity with legal trademark registration." },
+                            { title: "FSSAI License", desc: "Ensure compliance for food-related businesses." },
+                            { title: "Startup India Registration", desc: "Leverage tax exemptions and funding under Startup India." }
+                        ].map((service, index) => (
+                            <div key={index} className="card p-8 rounded-xl shadow-lg m-4">
+                                <h3 className="text-2xl font-semibold mb-6 luxury-text">{service.title}</h3>
+                                <p className="text-xl text-gray-300 leading-loose">{service.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Pricing = () => (
+            <section id="pricing" className="bg-[#1e1e3f] py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="section-heading text-center mb-16 luxury-text">Transparent Pricing</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        {[
+                            { service: "Private Limited Company", price: "₹5,000" },
+                            { service: "Public Limited Company", price: "₹6,000" },
+                            { service: "Section-8 Company", price: "₹5,000" },
+                            { service: "LLP Registration", price: "₹4,000" },
+                            { service: "One Person Company", price: "₹4,500" },
+                            { service: "Partnership Firm", price: "₹3,000" },
+                            { service: "Sole Proprietorship", price: "₹2,000" },
+                            { service: "GST Registration", price: "₹2,000" },
+                            { service: "MSME Registration", price: "₹1,500" },
+                            { service: "DPIIT Registration", price: "₹2,500" },
+                            { service: "Shop & Establishment License", price: "₹1,800" },
+                            { service: "Import Export Code (IEC)", price: "₹2,000" },
+                            { service: "Trademark Registration", price: "₹6,500" },
+                            { service: "FSSAI License", price: "₹3,500" },
+                            { service: "Startup India Registration", price: "₹2,500" }
+                        ].map((item, index) => (
+                            <div key={index} className="card p-8 rounded-xl shadow-lg m-4 text-center">
+                                <h3 className="text-2xl font-semibold mb-6 luxury-text">{item.service}</h3>
+                                <p className="text-3xl font-bold mb-6 text-gray-200">{item.price}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const About = () => (
+            <section id="about" className="py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="section-heading text-center mb-16 luxury-text">Our Mission</h2>
+                    <div className="max-w-4xl mx-auto text-center mb-12">
+                        <p className="text-xl text-gray-300 leading-loose">
+                            TaxationManager is a premier compliance platform dedicated to empowering entrepreneurs and businesses with seamless registration and legal solutions. From startups to established enterprises, we simplify incorporation and compliance with affordable, transparent pricing. Founded in 2024, our vision is to bridge the gap between complex regulations and business growth, enabling every entrepreneur to build a legally robust foundation. With a focus on efficiency, accessibility, and excellence, TaxationManager is your trusted partner in navigating the compliance landscape and achieving sustainable success.
+                        </p>
+                    </div>
+                    <h3 className="text-3xl font-semibold text-center mb-10 luxury-text">Our Visionary Founder</h3>
+                    <div className="max-w-2xl mx-auto card p-8 rounded-xl shadow-lg m-4">
+                        <h4 className="text-2xl font-semibold luxury-text">Mr. Gaurav Jain</h4>
+                        <p className="text-xl text-gray-300 mt-6 leading-loose">
+                            With over 25 years of experience in financial advisory, Mr. Gaurav Jain is a beacon of strategic insight, guiding businesses and individuals through the intricacies of finance. Since 2000, he has led his own firm, delivering tailored solutions for long-term financial stability. In 2024, Mr. Jain founded TaxationManager, driven by a passion to make business compliance accessible and efficient. As an emerging entrepreneur, he invests in innovative ventures, reflecting his commitment to fostering growth and excellence. His vision continues to shape TaxationManager as a cornerstone for entrepreneurial success.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Differences = () => (
+            <section id="differences" className="bg-[#1e1e3f] py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="section-heading text-center mb-16 luxury-text">Business Entity Comparison</h2>
+                    <div className="overflow-x-auto mx-4">
+                        <table className="text-base">
+                            <thead>
+                                <tr>
+                                    <th className="p-4">Aspect</th>
+                                    <th className="p-4">Private Limited Company</th>
+                                    <th className="p-4">Public Limited Company</th>
+                                    <th className="p-4">LLP</th>
+                                    <th className="p-4">One Person Company</th>
+                                    <th className="p-4">Partnership Firm</th>
+                                    <th className="p-4">Sole Proprietorship</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {[
+                                    {
+                                        aspect: "Liability",
+                                        privateLtd: "Limited, protects personal assets.",
+                                        publicLtd: "Limited, protects personal assets.",
+                                        llp: "Limited, partners not personally liable.",
+                                        opc: "Limited, protects personal assets.",
+                                        partnership: "Unlimited, partners personally liable.",
+                                        sole: "Unlimited, owner personally liable."
+                                    },
+                                    {
+                                        aspect: "Ownership",
+                                        privateLtd: "2-200 shareholders.",
+                                        publicLtd: "7+ shareholders, no upper limit.",
+                                        llp: "2+ partners, no upper limit.",
+                                        opc: "Single owner.",
+                                        partnership: "2-20 partners.",
+                                        sole: "Single owner."
+                                    },
+                                    {
+                                        aspect: "Funding",
+                                        privateLtd: "Equity, loans, angel investment.",
+                                        publicLtd: "Public shares, bonds, equity.",
+                                        llp: "Partner contributions, loans.",
+                                        opc: "Equity, loans, limited options.",
+                                        partnership: "Partner contributions, loans.",
+                                        sole: "Personal funds, loans."
+                                    },
+                                    {
+                                        aspect: "Compliance",
+                                        privateLtd: "High, annual filings, audits.",
+                                        publicLtd: "Very high, SEBI regulations, filings.",
+                                        llp: "Moderate, annual filings, no audits.",
+                                        opc: "Moderate, simplified filings.",
+                                        partnership: "Low, minimal filings.",
+                                        sole: "Minimal, basic tax filings."
+                                    },
+                                    {
+                                        aspect: "Taxation",
+                                        privateLtd: "Corporate tax, dividend tax.",
+                                        publicLtd: "Corporate tax, dividend tax.",
+                                        llp: "Taxed as partnership, no dividend tax.",
+                                        opc: "Corporate tax, dividend tax.",
+                                        partnership: "Taxed as partnership.",
+                                        sole: "Personal income tax."
+                                    },
+                                    {
+                                        aspect: "Scalability",
+                                        privateLtd: "High, suitable for growth.",
+                                        publicLtd: "Very high, ideal for large-scale.",
+                                        llp: "Moderate, flexible for SMEs.",
+                                        opc: "Limited, suited for small ventures.",
+                                        partnership: "Limited, depends on partners.",
+                                        sole: "Low, constrained by owner."
+                                    }
+                                ].map((row, index) => (
+                                    <tr key={index}>
+                                        <td className="p-4">{row.aspect}</td>
+                                        <td className="p-4">{row.privateLtd}</td>
+                                        <td className="p-4">{row.publicLtd}</td>
+                                        <td className="p-4">{row.llp}</td>
+                                        <td className="p-4">{row.opc}</td>
+                                        <td className="p-4">{row.partnership}</td>
+                                        <td className="p-4">{row.sole}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Benefits = () => (
+            <section id="benefits" className="py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="section-heading text-center mb-16 luxury-text">Benefits of Compliance with TaxationManager</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        {[
+                            { title: "Enhanced Credibility", desc: "Formal registration builds trust with clients, investors, and partners worldwide." },
+                            { title: "Legal Protection", desc: "Limited liability entities safeguard personal assets from business risks." },
+                            { title: "Access to Funding", desc: "Registered businesses attract venture capital, loans, and government grants." },
+                            { title: "Tax Advantages", desc: "GST registration and exemptions optimize tax liabilities and boost profits." },
+                            { title: "Brand Security", desc: "Trademark registration protects your intellectual property and brand identity." },
+                            { title: "Government Incentives", desc: "MSME and Startup India registrations unlock subsidies, tax breaks, and support." },
+                            { title: "Operational Efficiency", desc: "Streamlined compliance allows you to focus on growth, not paperwork." }
+                        ].map((benefit, index) => (
+                            <div key={index} className="card p-8 rounded-xl shadow-lg m-4">
+                                <h3 className="text-2xl font-semibold mb-6 luxury-text">{benefit.title}</h3>
+                                <p className="text-xl text-gray-300 leading-loose">{benefit.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Myths = () => (
+            <section id="myths" className="bg-[#1e1e3f] py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="section-heading text-center mb-16 luxury-text">Dispelling Compliance Myths</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        {[
+                            { myth: "Registration is Expensive", fact: "TaxationManager offers services starting at ₹1,500, making compliance affordable." },
+                            { myth: "Compliance is Too Complex", fact: "Our streamlined processes simplify regulations for all business types." },
+                            { myth: "Only Large Businesses Need Registration", fact: "SMEs gain credibility, tax benefits, and funding through registration." },
+                            { myth: "GST is Only for Big Enterprises", fact: "Voluntary GST registration offers SMEs input tax credits and market access." },
+                            { myth: "Registration Takes Too Long", fact: "Our efficient services expedite registrations, often completed in days." }
+                        ].map((item, index) => (
+                            <div key={index} className="card p-8 rounded-xl shadow-lg m-4">
+                                <h3 className="text-2xl font-semibold mb-6 text-red-400">Myth: {item.myth}</h3>
+                                <p className="text-xl text-gray-300 leading-loose"><strong>Fact:</strong> {item.fact}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const GovernmentData = () => {
+            React.useEffect(() => {
+                const ctx1 = document.getElementById('msmeChart').getContext('2d');
+                new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: ['2019', '2020', '2021', '2022', '2023'],
+                        datasets: [{
+                            label: 'MSME Registrations (in Millions)',
+                            data: [6.3, 7.1, 8.5, 9.8, 11.2],
+                            backgroundColor: '#1e40af',
+                            borderColor: '#60a5fa',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: { beginAtZero: true, title: { display: true, text: 'Registrations', color: '#e5e7eb', font: { size: 16 } } },
+                            x: { title: { display: true, text: 'Year', color: '#e5e7eb', font: { size: 16 } } }
+                        },
+                        plugins: { legend: { labels: { color: '#e5e7eb', font: { size: 16 } } } }
+                    }
+                });
+
+                const ctx2 = document.getElementById('gstChart').getContext('2d');
+                new Chart(ctx2, {
+                    type: 'line',
+                    data: {
+                        labels: ['2019', '2020', '2021', '2022', '2023'],
+                        datasets: [{
+                            label: 'GST Registrations (in Millions)',
+                            data: [1.1, 1.2, 1.3, 1.4, 1.5],
+                            borderColor: '#60a5fa',
+                            backgroundColor: 'rgba(96, 165, 250, 0.2)',
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: { beginAtZero: true, title: { display: true, text: 'Registrations', color: '#e5e7eb', font: { size: 16 } } },
+                            x: { title: { display: true, text: 'Year', color: '#e5e7eb', font: { size: 16 } } }
+                        },
+                        plugins: { legend: { labels: { color: '#e5e7eb', font: { size: 16 } } } }
+                    }
+                });
+            }, []);
+
+            return (
+                <section id="data" className="py-24">
+                    <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <h2 className="section-heading text-center mb-16 luxury-text">Market Insights</h2>
+                        <p className="text-xl text-center text-gray-300 mb-12 max-w-3xl mx-auto leading-loose">
+                            Explore the exponential growth in business registrations, highlighting the importance of compliance for credibility and growth.
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <div className="canvas-container m-4">
+                                <h3 className="text-2xl font-semibold mb-6 luxury-text">MSME Registration Growth</h3>
+                                <canvas id="msmeChart"></canvas>
+                            </div>
+                            <div className="canvas-container m-4">
+                                <h3 className="text-2xl font-semibold mb-6 luxury-text">GST Registration Surge</h3>
+                                <canvas id="gstChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const DidYouKnow = () => (
+            <section id="did-you-know" className="bg-[#1e1e3f] py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="section-heading text-center mb-16 luxury-text">Did You Know?</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                        {[
+                            { fact: "In 2023, over 1.5 million businesses registered for GST, unlocking tax credits and market access." },
+                            { fact: "Over 2 million businesses registered as MSMEs in 2023, boosting their credibility and funding opportunities." },
+                            { fact: "DPIIT-recognized startups surged from 11,000 in 2019 to 60,000 in 2023, fueling innovation." },
+                            { fact: "Trademark registration can enhance a brand’s valuation by up to 20%, securing market presence." },
+                            { fact: "Startup India offers tax exemptions for the first three years, empowering new ventures." },
+                            { fact: "GST registration enables SMEs to compete in national markets with input tax credits." }
+                        ].map((item, index) => (
+                            <div key={index} className="card p-8 rounded-xl shadow-lg m-4 text-center">
+                                <p className="text-xl text-gray-300 leading-loose">{item.fact}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Testimonials = () => (
+            <section id="testimonials" className="bg-[#1e1e3f] py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="section-heading text-center mb-16 luxury-text">Customer Testimonials</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                        {[
+                            { name: "Prafful", quote: "Great service and affordable pricing. Made registration effortless!" },
+                            { name: "Vivek", quote: "Fast, reliable, and budget-friendly. Perfect for small businesses!" },
+                            { name: "Shreya", quote: "Registration was smooth, and the process was hassle-free!" },
+                            { name: "Niharika", quote: "Saved me time and money. Highly recommended!" }
+                        ].map((testimonial, index) => (
+                            <div key={index} className="testimonial-card m-4">
+                                <p className="text-xl text-gray-300 mb-6 italic leading-loose">"{testimonial.quote}"</p>
+                                <h4 className="text-xl font-semibold luxury-text">— {testimonial.name}</h4>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const FAQ = () => {
+            const [openIndex, setOpenIndex] = React.useState(null);
+
+            const toggleFAQ = (index) => {
+                setOpenIndex(openIndex === index ? null : index);
+            };
+
+            const faqs = [
+                {
+                    question: "How do I choose the right business structure for long-term scalability?",
+                    answer: "Your choice depends on factors like liability, taxation, and ownership flexibility. A private limited company offers robust legal protections and investment opportunities, whereas an LLP balances ownership flexibility with compliance efficiency."
+                },
+                {
+                    question: "Can my business operate across multiple states after registration?",
+                    answer: "Yes, but compliance requirements vary by state. If applicable, you may need additional registrations, such as GST or professional tax, to operate seamlessly across regions."
+                },
+                {
+                    question: "What is the impact of business registration on funding opportunities?",
+                    answer: "Registered businesses have stronger credibility with investors and banks. Venture capitalists and lenders prioritize legal entities over informal setups when offering funding."
+                },
+                {
+                    question: "Are there tax benefits associated with registering a business?",
+                    answer: "Absolutely! Registered businesses can access deductions, depreciation benefits, and incentives under various tax laws, reducing the overall financial burden."
+                },
+                {
+                    question: "Can a registered business hold intellectual property rights?",
+                    answer: "Yes, once registered, a business can file for trademarks, patents, and copyrights, securing its unique branding and innovations legally."
+                },
+                {
+                    question: "How does business registration influence contractual obligations?",
+                    answer: "A registered business can legally enter contracts, ensuring enforceability and credibility when dealing with clients, vendors, or investors."
+                },
+                {
+                    question: "Is it necessary to register a business before hiring employees?",
+                    answer: "Yes, formal business registration enables compliance with labor laws, employee benefits, and taxation requirements like PF and ESIC contributions."
+                },
+                {
+                    question: "Can I convert my sole proprietorship into a private limited company later?",
+                    answer: "Yes, conversion is possible and often beneficial for expanding operations, attracting investors, and limiting personal liability. However, regulatory approvals and financial restructuring may be required."
+                },
+                {
+                    question: "How does business registration affect banking and finance access?",
+                    answer: "Registered entities can open business bank accounts, apply for credit lines, and issue invoices professionally, enhancing financial management and credibility."
+                },
+                {
+                    question: "What future-proofing steps should I consider after registering my business?",
+                    answer: "Ensure timely tax filings, maintain proper documentation, and periodically review compliance requirements to adapt to regulatory changes, keeping your business legally secure and scalable."
+                }
+            ];
+
+            return (
+                <section id="faq" className="bg-[#1e1e3f] py-24">
+                    <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                        <h2 className="section-heading text-center mb-16 luxury-text">Frequently Asked Questions</h2>
+                        <div className="max-w-3xl mx-auto">
+                            {faqs.map((faq, index) => (
+                                <div key={index} className="mb-6">
+                                    <div
+                                        className="faq-question flex justify-between items-center"
+                                        onClick={() => toggleFAQ(index)}
+                                    >
+                                        <h3 className="text-xl font-semibold text-gray-200">{faq.question}</h3>
+                                        <span className="text-blue-400 text-xl">{openIndex === index ? '−' : '+'}</span>
+                                    </div>
+                                    <div className={`faq-answer ${openIndex === index ? 'open' : ''}`}>
+                                        <p className="text-lg text-gray-300 leading-loose">{faq.answer}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const Contact = () => (
+            <section id="contact" className="bg-[#1e1e3f] py-24">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <h2 className="section-heading text-center mb-16 luxury-text">Connect with Us</h2>
+                    <div className="max-w-xl mx-auto card p-8 rounded-xl shadow-lg m-4">
+                        <div className="mb-6">
+                            <label className="block text-lg text-gray-300 mb-2">Full Name</label>
+                            <input type="text" className="w-full p-4 bg-[#0a0f2b] border border-[#2b3a7a] rounded text-gray-200 text-lg" placeholder="Your Name" />
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-lg text-gray-300 mb-2">Email Address</label>
+                            <input type="email" className="w-full p-4 bg-[#0a0f2b] border border-[#2b3a7a] rounded text-gray-200 text-lg" placeholder="Your Email" />
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-lg text-gray-300 mb-2">Phone Number</label>
+                            <input type="tel" className="w-full p-4 bg-[#0a0f2b] border border-[#2b3a7a] rounded text-gray-200 text-lg" placeholder="Your Phone" />
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-lg text-gray-300 mb-2">Service of Interest</label>
+                            <select className="w-full p-4 bg-[#0a0f2b] border border-[#2b3a7a] rounded text-gray-200 text-lg">
+                                <option value="">Select a Service</option>
+                                {[
+                                    "Private Limited Company",
+                                    "Public Limited Company",
+                                    "Section-8 Company",
+                                    "LLP Registration",
+                                    "One Person Company",
+                                    "Partnership Firm",
+                                    "Sole Proprietorship",
+                                    "GST Registration",
+                                    "MSME Registration",
+                                    "DPIIT Registration",
+                                    "Shop & Establishment License",
+                                    "Import Export Code (IEC)",
+                                    "Trademark Registration",
+                                    "FSSAI License",
+                                    "Startup India Registration"
+                                ].map((service, index) => (
+                                    <option key={index} value={service}>{service}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-lg text-gray-300 mb-2">Your Message</label>
+                            <textarea className="w-full p-4 bg-[#0a0f2b] border border-[#2b3a7a] rounded text-gray-200 text-lg" rows="5" placeholder="Your Message"></textarea>
+                        </div>
+                        <button className="btn-primary text-xl">Submit Inquiry</button>
+                    </div>
+                    <div className="text-center mt-12 text-gray-300">
+                        <p className="mb-6 text-xl leading-loose"><strong>Contact Numbers:</strong> +9811439332, +8700627526</p>
+                        <p className="mb-6 text-xl leading-loose"><strong>Office Address:</strong> F-306, T-07, Valley View Estates, Faridabad Road, Gurugram-122003</p>
+                        <p className="mb-6 text-xl leading-loose"><strong>Working Hours:</strong> Monday - Friday: 9:00-06:00</p>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Footer = () => (
+            <footer className="bg-[#0a0f2b] text-gray-300 py-12">
+                <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center space-y-4">
+                    <p className="text-lg leading-loose">© 2024 TaxationManager. All Rights Reserved.</p>
+                    <p className="text-lg leading-loose">
+                        TaxationManager is a business registration platform owned and operated by Arihant Consultants. All business activities conducted through TaxationManager are managed and overseen by Arihant Consultants.
+                    </p>
+                    <p className="text-lg italic leading-loose">
+                        Designed with precision and passion by Daksh Jain ❤️
+                    </p>
+                </div>
+            </footer>
+        );
+
+        const App = () => (
+            <div>
+                <Navbar />
+                <Hero />
+                <Services />
+                <Pricing />
+                <About />
+                <Differences />
+                <Benefits />
+                <Myths />
+                <GovernmentData />
+                <DidYouKnow />
+                <Testimonials />
+                <FAQ />
+                <Contact />
+                <Footer />
+            </div>
+        );
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+
+
